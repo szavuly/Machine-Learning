@@ -159,13 +159,12 @@ ggplot(dataset, aes(customersuspended, ..count..)) +
   geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Customer Suspended", y = "Volume")
 reg5 <- lm(churn ~ customersuspended, data = dataset)
 summary(reg5)
-ggplot(data = dataset, aes(x = churn, y = customersuspended)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
 
 ```
 
 ## Predictor: Education
+
+Our annual education predictor classifies customers into 4 categories, high school or below having the most, PhD or equivalent having the least. People with Bachelor or equivalent education are 9.7% more likely to churn (with a statistical significance), while those having Master or equivalent with 2.4%.
 
 ```{r education, message=FALSE, warning=FALSE}
 
@@ -174,13 +173,12 @@ ggplot(dataset, aes(education, ..count..)) +
   geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Education", y = "Volume")
 reg6 <- lm(churn ~ education, data = dataset)
 summary(reg6)
-ggplot(data = dataset, aes(x = churn, y = education)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
 
 ```
 
 ## Predictor: Gender
+
+Our dataset is very balanced when it comes to gender: 10474 female and 9994 male. Female customers are 9.2% more likely to churn (with a statistical significance).
 
 ```{r gender, message=FALSE, warning=FALSE}
 
@@ -189,13 +187,12 @@ ggplot(dataset, aes(gender, ..count..)) +
   geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Gender", y = "Volume")
 reg7 <- lm(churn ~ gender, data = dataset)
 summary(reg7)
-ggplot(data = dataset, aes(x = churn, y = gender)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
 
 ```
 
 ## Predictor: Home Owner
+
+Our dataset is pretty inbalanced when it comes to owning a home, with non-owners being 4 times as much in numbers. This is important because those, who doesn't own a home are 9.4% more likely to churn (with a statistical significance), so 4/5 of our customer base.
 
 ```{r homeowner, message=FALSE, warning=FALSE}
 
@@ -204,13 +201,12 @@ ggplot(dataset, aes(homeowner, ..count..)) +
   geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Home Owner", y = "Volume")
 reg8 <- lm(churn ~ homeowner, data = dataset)
 summary(reg8)
-ggplot(data = dataset, aes(x = churn, y = homeowner)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
 
 ```
 
 ## Predictor: Marital Status
+
+Married and single customers are well balanced in the dataset: 10022 married and 10446 singles. It might be a bit of a surprise that married customers are 0.85% more likely to churn.
 
 ```{r maritalstatus, message=FALSE, warning=FALSE}
 
@@ -219,13 +215,12 @@ ggplot(dataset, aes(maritalstatus, ..count..)) +
   geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Marital Status", y = "Volume")
 reg9 <- lm(churn ~ maritalstatus, data = dataset)
 summary(reg9)
-ggplot(data = dataset, aes(x = churn, y = maritalstatus)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
 
 ```
 
 ## Predictor: Monthly Billed Amount
+
+
 
 ```{r monthlybilledamount, message=FALSE, warning=FALSE}
 
