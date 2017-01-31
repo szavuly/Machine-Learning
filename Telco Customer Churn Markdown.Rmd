@@ -76,7 +76,7 @@ summary(dataset)
 
 Our first predictor's observations shows a balanced distribution, with a median of 45 years. Although the youngest member of our dataset is only 12 years old, we decide to keep all observations because of the symmetric distribution.
 
-When regressing age on churn categories (0 for no churn and 1 for churn) we see a negative slope: people of younger age are more likely to churn.
+When regressing age on churn categories (0 for no churn and 1 for churn) we see a negative slope: people of younger age are more likely to churn. Please note that regression tables and plots represent data with an opposite regression.
 
 ```{r age, message=FALSE, warning=FALSE}
 
@@ -95,7 +95,7 @@ ggplot(data = dataset, aes(x = churn, y = age)) +
 
 Our annual income predictor shows a balanced distribution, with a median of 123700 USD, represented here in a histogram with a binwidth of 10000 USD. As the minimum annual income is 61900 and the distribution is very symmetric, we can assume that the dataset not only contains wealthy customers.
 
-When regressing annual income on churn categories (0 for no churn and 1 for churn) we see almost no correlation between annual income and likelihood to churn.
+When regressing churn on income we see no correlation between annual income and likelihood to churn.
 
 ```{r annualincome, message=FALSE, warning=FALSE}
 
@@ -114,7 +114,7 @@ ggplot(data = dataset, aes(x = churn, y = annualincome)) +
 
 We assume that call drop rate is important predictor of a possible churn, as it is directly connected to the quality of service a customer receives. The median call drop rate is of 0.04, so 4% of the calls being dropped, with a symmetric distribution between no drops and 7% drops.
 
-When regressing call drop rate on churn categories (0 for no churn and 1 for churn) we see a positive slope. No surprisingly, people with more dropped calls will churn more likely (but with no statistical significance, as the standard error is high).
+When regressing churn on call drop rate we see a 0.08 higher churn for those having one unit higher call drops.
 
 ```{r calldroprate, message=FALSE, warning=FALSE}
 
@@ -133,7 +133,7 @@ ggplot(data = dataset, aes(x = churn, y = calldroprate)) +
 
 We assume that call failure rate is important predictor of a possible churn, as it is directly connected to the quality of service a customer receives. The median call failure rate is of 0.02, so 2% of the calls fail, with an almost symmetric distribution between no failure and 3% failures
 
-When regressing call failure rate on churn categories (0 for no churn and 1 for churn) we see a positive slope. No surprisingly, people with more dropped calls will churn more likely (but with no statistical significance, as the standard error is high).
+When regressing call failure rate on churn we see a 0.09 higher churn for those having one unit higher call drops, although with no statistical significance.
 
 ```{r callfailurerate, message=FALSE, warning=FALSE}
 
@@ -164,7 +164,7 @@ summary(reg5)
 
 ## Predictor: Education
 
-Our annual education predictor classifies customers into 4 categories, high school or below having the most, PhD or equivalent having the least. People with Bachelor or equivalent education are 9.7% more likely to churn (with a statistical significance), while those having Master or equivalent with 2.4%.
+Our annual education predictor classifies customers into 4 categories, high school or below having the most, PhD or equivalent having the least. People with Bachelor or equivalent education are more likely to churn (with a statistical significance) than any other group.
 
 ```{r education, message=FALSE, warning=FALSE}
 
@@ -178,7 +178,7 @@ summary(reg6)
 
 ## Predictor: Gender
 
-Our dataset is very balanced when it comes to gender: 10474 female and 9994 male. Female customers are 9.2% more likely to churn (with a statistical significance).
+Our dataset is very balanced when it comes to gender: 10474 female and 9994 male. Female customers are more likely to churn (with a statistical significance).
 
 ```{r gender, message=FALSE, warning=FALSE}
 
@@ -192,7 +192,7 @@ summary(reg7)
 
 ## Predictor: Home Owner
 
-Our dataset is pretty inbalanced when it comes to owning a home, with non-owners being 4 times as much in numbers. This is important because those, who doesn't own a home are 9.4% more likely to churn (with a statistical significance), so 4/5 of our customer base.
+Our dataset is pretty inbalanced when it comes to owning a home, with non-owners being 4 times as much in numbers. This is important because those, who doesn't own a home are much more likely to churn (with a statistical significance), so 4/5 of our customer base.
 
 ```{r homeowner, message=FALSE, warning=FALSE}
 
@@ -206,7 +206,7 @@ summary(reg8)
 
 ## Predictor: Marital Status
 
-Married and single customers are well balanced in the dataset: 10022 married and 10446 singles. It might be a bit of a surprise that married customers are 0.85% more likely to churn.
+Married and single customers are well balanced in the dataset: 10022 married and 10446 singles. It might be a bit of a surprise that married customers are more likely to churn.
 
 ```{r maritalstatus, message=FALSE, warning=FALSE}
 
@@ -220,7 +220,17 @@ summary(reg9)
 
 ## Predictor: Monthly Billed Amount
 
+Monthly billed amount is a very important factor in a telecommunications services. In our dataset, there's a very symmetric distribution with a median of 60 USD. In a more precise description of the dataset:
 
+- minimum is 0 USD
+
+- 1st quartile is 29 USD
+
+- 3rd quartile is 90 USD (50% of the distribution is between 29 and 90 USD)
+
+- maximum is 119 USD
+
+When regressing churn on monthly billed amount we see a 0.08 higher churn for those having one unit higher billed amount.
 
 ```{r monthlybilledamount, message=FALSE, warning=FALSE}
 
@@ -243,10 +253,11 @@ As none of the observed customers have additional lines, this variable will be r
 
 summary(dataset$noadditionallines)
 
-
 ```
 
 ## Predictor: Number of Complaints
+
+Customers reported complaints between 0 and 3 occasions. When regressing churn on number of complaints we see a 0.07 higher churn for those having one unit higher complaints
 
 ```{r numberofcomplaints, message=FALSE, warning=FALSE}
 
@@ -263,6 +274,8 @@ ggplot(data = dataset, aes(x = churn, y = numberofcomplaints)) +
 
 ## Predictor: Number of Month Unpaid
 
+It might be surprising, that number of months unpaid doesn't show right skewness (making 0 unpaid months in most observations), but it equally distributed from 0 to 7 months. However, there doesn't seem to be a correlation between number of months unpaid and churn.
+
 ```{r numberofmonthunpaid, message=FALSE, warning=FALSE}
 
 summary(dataset$numberofmonthunpaid)
@@ -277,6 +290,8 @@ ggplot(data = dataset, aes(x = churn, y = numberofmonthunpaid)) +
 ```
 
 ## Predictor: Number of Days when the Contract Equipment Plan is Expiring
+
+Our dataset of contract expiry date is symmetrically distributed between 0 and 99 days, however, there is very small correlation between expiray date and churn.
 
 ```{r numdayscontractequipmentplanexpiring, message=FALSE, warning=FALSE}
 
@@ -293,6 +308,8 @@ ggplot(data = dataset, aes(x = churn, y = numdayscontractequipmentplanexpiring))
 
 ## Predictor: Occupation
 
+In our dataset there's an occupation categorization into people working in technology-related, non-technology related and other jobs. As strange as this classification is, we leave it as predictor as customers classified in the non-technology occupation are more likely to churn (with a statistical significance), which should end up as important factor.
+
 ```{r occupation, message=FALSE, warning=FALSE}
 
 summary(dataset$occupation)
@@ -300,13 +317,12 @@ ggplot(dataset, aes(occupation, ..count..)) +
   geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Occupation", y = "Volume")
 reg14 <- lm(churn ~ occupation, data = dataset)
 summary(reg14)
-ggplot(data = dataset, aes(x = churn, y = occupation)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
 
 ```
 
 ## Predictor: Penalty to Switch
+
+Penalty to switch moves between 0 and 499 USD, with a median of 249 USD - so quite significant amounts, but they don't seem to correlate with with churn intent.
 
 ```{r penaltytoswitch, message=FALSE, warning=FALSE}
 
@@ -323,6 +339,8 @@ ggplot(data = dataset, aes(x = churn, y = penaltytoswitch)) +
 
 ## Predictor: State
 
+We have in our dataset churn data for all states, where we see that Alaska and South Carolina are more likely to churn with a statistical significance.
+
 ```{r state, message=FALSE, warning=FALSE}
 
 summary(dataset$state)
@@ -334,6 +352,8 @@ summary(reg16)
 ```
 
 ## Predictor: Total Minutes Used in Last Month
+
+Total minutes used last month shows a symmetric distribution of minutes, from 0 to 499 with a median of 249 minutes. According to our dataset, it seems that there is no correlation between power-usage and churn.
 
 ```{r totalminsusedinlastmonth, message=FALSE, warning=FALSE}
 
@@ -350,6 +370,9 @@ ggplot(data = dataset, aes(x = churn, y = totalminsusedinlastmonth)) +
 
 ## Predictor: Unpaid Balance
 
+Unpaid balances vary from 0 to 249 USD, but the amount of them doesn't account for churn intent in a statistically significant way.
+
+
 ```{r unpaidbalance, message=FALSE, warning=FALSE}
 
 summary(dataset$unpaidbalance)
@@ -365,6 +388,8 @@ ggplot(data = dataset, aes(x = churn, y = unpaidbalance)) +
 
 ## Predictor: Uses Internet Service
 
+A vast majority of our customers don't use internet services, which is an important factor as they account for much more churn than those, who subscribed to this service.
+
 ```{r usesinternetservice, message=FALSE, warning=FALSE}
 
 summary(dataset$usesinternetservice)
@@ -372,13 +397,12 @@ ggplot(dataset, aes(usesinternetservice, ..count..)) +
   geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Uses Internet Service", y = "Volume")
 reg19 <- lm(churn ~ usesinternetservice, data = dataset)
 summary(reg19)
-ggplot(data = dataset, aes(x = churn, y = usesinternetservice)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
 
 ```
 
 ## Predictor: Uses Voice Service
+
+A vast majority of our customers don't use voice services (these might mean additional voice-related services), which is an important factor as they account for much more churn than those, who subscribed to this service.
 
 ```{r usesvoiceservice, message=FALSE, warning=FALSE}
 
@@ -387,13 +411,12 @@ ggplot(dataset, aes(usesvoiceservice, ..count..)) +
   geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Uses Voice Service", y = "Volume")
 reg20 <- lm(churn ~ usesvoiceservice, data = dataset)
 summary(reg20)
-ggplot(data = dataset, aes(x = churn, y = usesvoiceservice)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
 
 ```
 
 ## Predictor: Percentage Call Outside the Network
+
+Half of the calls of our customers go outside of our network. Although the numbers don't support statistical significance, it's interesting to note that those making more calls outside the network tend to churn a bit less.
 
 ```{r percentagecalloutsidenetwork, message=FALSE, warning=FALSE}
 
@@ -410,7 +433,7 @@ ggplot(data = dataset, aes(x = churn, y = percentagecalloutsidenetwork)) +
 
 ## Predictor: Total Call Duration
 
-The total call duration dataset is skewed to the right and will be truncated from 10001 minutes for the machine learning model.
+The median of total call duration is 3365 minutes, with half of the observations between 2048 and 4786 minutes. The total call duration dataset is skewed to the right and will be truncated from 10001 minutes for the machine learning model.
 
 ```{r totalcallduration, message=FALSE, warning=FALSE}
 
@@ -426,6 +449,8 @@ ggplot(data = dataset, aes(x = churn, y = totalcallduration)) +
 ```
 
 ## Predictor: Average Call Duration
+
+Average call durations show a nice symmetric standard distribution with a median of 721 very close to the mean of 721.5. However, it doesn't have a significant effect on churn rate.
 
 ```{r avgcallduration, message=FALSE, warning=FALSE}
 
@@ -522,7 +547,38 @@ finaldataset$usesvoiceservice <- NULL
 
 ```
 
+## Main remarks after our data exploration
+
+During our data exploration, we could point out some correlations in the dataset regarding churn:
+
+- people of younger age are more likely to churn
+
+- customers with higher call drop rate tend more to churn
+
+- people with Bachelor or equivalent education are more likely to churn
+
+- female customers are more likely to churn
+
+- those, who doesn't own a home are much more likely to churn
+
+- married customers are more likely to churn
+
+- there is a higher churn for those having one unit higher billed amount.
+
+- there is a higher churn for those having more complaints
+
+- customers classified in the non-technology occupation are more likely to churn
+
+- Alaska and South Carolina are more likely to churn
+
+- those who don't use extra internet services are more likely to churn
+
+- those who don't use extra voice services are more likely to churn
+
+
 ## Split Train/Test Datasets
+
+We split our dataset into training, validation and test sets. We will keep our test set untouched until the selection of our final model.
 
 ```{r split, message=FALSE, warning=FALSE}
 
@@ -541,6 +597,8 @@ d_test  <- finaldataset[idx_test,]
 
 ## Setup
 
+We will use H2O as our machine learning engine and will use 3 types of random forest and 3 types of gradient boosting methods.
+
 ```{r upload, message=FALSE, warning=FALSE}
 
 library(h2o)
@@ -557,7 +615,7 @@ dx_test$churn <- as.factor(dx_test$churn)
 
 ## Random forest 1
 
-Training performance: 0.66, test performance: 0.67
+Training performance: 0.65, test performance: 0.66
 
 ```{r randomforest1, message=FALSE, warning=FALSE}
 
@@ -575,7 +633,7 @@ md_rf
 
 h2o.auc(md_rf)
 
-h2o.auc(h2o.performance(md_rf, dx_test))
+h2o.auc(h2o.performance(md_rf, dx_valid))
 
 ```
 
@@ -599,15 +657,137 @@ md_rf
 
 h2o.auc(md_rf)
 
-h2o.auc(h2o.performance(md_rf, dx_test))
+h2o.auc(h2o.performance(md_rf, dx_valid))
 
 ```
 
 ## Random forest 3
 
-Training performance: 0.84, test performance: 0.84
+Training performance: 0.84, test performance: 0.85. The random forest model performed very consistently from training to validation set, and with quite fast computation.
 
 ```{r randomforest3, message=FALSE, warning=FALSE}
+
+{
+  md_rf <- h2o.randomForest(x = c(2:83), 
+                            y = "churn", 
+                            training_frame = dx_train, 
+                            mtries = -1, 
+                            ntrees = 1000, 
+                            max_depth = 15, 
+                            nbins = 20)
+}
+
+md_rf
+
+h2o.auc(md_rf)
+
+h2o.auc(h2o.performance(md_rf, dx_valid))
+
+```
+
+## GBM 1
+
+Training performance: 0.74, test performance: 0.63. We already can compare with our first interation of the random forest performing better and more consistent across the training and the validation set.
+
+```{r gbm1, message=FALSE, warning=FALSE}
+
+{
+  md_gbm <- h2o.gbm(x = c(2:83), 
+                    y = "churn", 
+                    training_frame = dx_train, 
+                    ntrees = 100, 
+                    max_depth = 5, 
+                    learn_rate = 0.01) 
+}
+
+md_gbm
+
+h2o.auc(md_gbm)
+
+h2o.auc(h2o.performance(md_gbm, dx_valid))
+
+```
+
+## GBM 2
+
+Training performance: 0.99, test performance: 0.81. We suspect overfitting in the case of this GBM model and we run the third, even more complex model just for completeness.
+
+```{r gbm2, message=FALSE, warning=FALSE}
+
+{
+  md_gbm <- h2o.gbm(x = c(2:83), 
+                    y = "churn", 
+                    training_frame = dx_train, 
+                    ntrees = 200, 
+                    max_depth = 10, 
+                    learn_rate = 0.03) 
+}
+
+md_gbm
+
+h2o.auc(md_gbm)
+
+h2o.auc(h2o.performance(md_gbm, dx_valid))
+
+```
+
+## GBM 3
+
+Training performance: 1, test performance: 0.82. This model was tested just for completeness, showing zero error (overfitting), but a lesser result on the validation set than the 3rd installment of our random forest. This supports the theory of overfitting models being prone to more errors on future data. It's also worth noting that this model performed very poorly in computation time.
+
+```{r gbm3, message=FALSE, warning=FALSE}
+
+{
+  md_gbm <- h2o.gbm(x = c(2:83), 
+                    y = "churn", 
+                    training_frame = dx_train, 
+                    ntrees = 1000, 
+                    max_depth = 15, 
+                    learn_rate = 0.1) 
+}
+
+md_gbm
+
+h2o.auc(md_gbm)
+
+h2o.auc(h2o.performance(md_gbm, dx_valid))
+
+```
+
+## Results
+
+Model complexities and computing times grow from 1 to 3.
+
+Random forest
+
+1: Training performance: 0.65, validation performance: 0.66
+
+2: Training performance: 0.77, validation performance: 0.79
+
+3: Training performance: 0.84, validation performance: 0.85
+
+GBM 
+
+1: Training performance: 0.74, validation performance: 0.63
+
+2: Training performance: 0.99, validation performance: 0.81
+
+3: Training performance: 1, validation performance: 0.85
+
+Chosen model: random forest 3
+
+- validation performance of 0.84
+
+- ntrees = 1000
+
+- max_depth = 15
+
+
+## Random forest model 3 test
+
+We test our chosen random forest model 3 on our test set, which was unused so far.
+
+```{r randomforesttest, message=FALSE, warning=FALSE}
 
 {
   md_rf <- h2o.randomForest(x = c(2:83), 
@@ -627,811 +807,17 @@ h2o.auc(h2o.performance(md_rf, dx_test))
 
 ```
 
-## GBM 1
+We test our chosen model with the test set, leading to an AUROC of 0.84. 
 
-Training performance: 0.74, test performance: 0.65
+In details from our confusion matrix, our model returned:
 
-```{r gbm1, message=FALSE, warning=FALSE}
+- 9181 true positives for a dataset of 10205
 
-{
-  md_gbm <- h2o.gbm(x = c(2:83), 
-                    y = "churn", 
-                    training_frame = dx_train, 
-                    ntrees = 100, 
-                    max_depth = 5, 
-                    learn_rate = 0.01) 
-}
+- 465 true negatives
 
-md_gbm
+- 108 false positives and 451 false negatives
 
-h2o.auc(md_gbm)
-
-h2o.auc(h2o.performance(md_gbm, dx_test))
-
-```
-
-## GBM 2
-
-Training performance: 0.99, test performance: 0.79
-
-```{r gbm2, message=FALSE, warning=FALSE}
-
-{
-  md_gbm <- h2o.gbm(x = c(2:83), 
-                    y = "churn", 
-                    training_frame = dx_train, 
-                    ntrees = 200, 
-                    max_depth = 10, 
-                    learn_rate = 0.03) 
-}
-
-md_gbm
-
-h2o.auc(md_gbm)
-
-h2o.auc(h2o.performance(md_gbm, dx_test))
-
-```
-
-## GBM 3
-
-Training performance: 1, test performance: 0.82
-
-```{r gbm3, message=FALSE, warning=FALSE}
-
-{
-  md_gbm <- h2o.gbm(x = c(2:83), 
-                    y = "churn", 
-                    training_frame = dx_train, 
-                    ntrees = 1000, 
-                    max_depth = 15, 
-                    learn_rate = 0.1) 
-}
-
-md_gbm
-
-h2o.auc(md_gbm)
-
-h2o.auc(h2o.performance(md_gbm, dx_test))
-
-```
-
-## Results
-
-Model complexities and computing times grow from 1 to 3.
-
-Random forest
-
-1: Training performance: 0.66, test performance: 0.67
-
-2: Training performance: 0.77, test performance: 0.79
-
-3: Training performance: 0.84, test performance: 0.84
-
-GBM 
-
-1: Training performance: 0.74, test performance: 0.65
-
-2: Training performance: 0.99, test performance: 0.79
-
-3: Training performance: 1, test performance: 0.82
-
-Chosen model: random forest 3
-
-- test performance of 0.84
-
-- ntrees = 1000
-
-- max_depth = 15
-
-
-=======
----
-title: "Customer Churn Machine Learning Project"
-author: "Krisztian Szavuly"
-date: "January 14, 2017"
-output: html_document
----
-
-```{r setup, include=FALSE}
-
-knitr::opts_chunk$set(echo = TRUE)
-
-```
-
-## Data Source
-
-Base management is an important discipline for telecommunication companies, more precisely tracking their customers' churn rates. Identifying and fighting potential churn is key maintaining the level of revenues. The database used for the experiment was part of the KDD 2009 Cup and is now available in the Cortana Intelligence gallery along with a set up experiment.
-Link: https://gallery.cortanaintelligence.com/Experiment/4dfb7478169f46158eb895014439689e  
-
-```{r libraries, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
-
-# LIBRARIES
-library(arm)
-library(readr)
-library(dplyr)
-library(ggplot2)
-library(pastecs)
-library(DataCombine)
-library(descr)
-library(fBasics)
-library(stargazer)
-library(sandwich)
-library(lmtest)
-library(splines)
-library(readr)
-library(gmodels)
-library(mfx)
-library(descr)
-library(rstan)
-
-# CLEAR MEMORY
-rm(list = ls())
-
-# SET WORKING DIRECTORY
-setwd("C:\\Users\\kszavuly\\OneDrive\\CEU\\BAJP 5010 - Data Science for Business\\Project")
-getwd()
-
-```
-
-## Reading and First Look at the Data
-
-Our dataset contains 20468 observations and 29 variables, with 0 NAs.We dropped the Month and Year variables possibly referring to the data recording timeframe of the churn. We removed calling number and customer ID in order to keep the dataset anonymized.
-
-```{r dataset, message=FALSE, warning=FALSE}
-
-dataset <- read.csv("CATelcoCustomerChurnTrainingSample.csv")
-colnames(dataset)
-dataset$year <- NULL
-dataset$month <- NULL
-dataset$callingnum <- NULL
-dataset$customerid <- NULL
-sum(is.na(dataset))
-
-```
-
-## Analyzing Variables
-
-```{r summaries, message=FALSE, warning=FALSE}
-
-summary(dataset)
-
-```
-
-## Predictor: Age
-
-```{r age, message=FALSE, warning=FALSE}
-
-summary(dataset$age)
-ggplot(dataset, aes(x = age)) +
-  geom_histogram(stat = "bin", binwidth = 10, colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "X Axis, binwidth: 10", y = "Density")
-reg1 <- lm(churn ~ age, data = dataset)
-summary(reg1)
-ggplot(data = dataset, aes(x = churn, y = age)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Annual Income
-
-```{r annualincome, message=FALSE, warning=FALSE}
-
-summary(dataset$annualincome)
-ggplot(dataset, aes(x = annualincome)) +
-  geom_histogram(stat = "bin", binwidth = 10000, colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "X Axis, binwidth: 10000", y = "Density")
-reg2 <- lm(churn ~ annualincome, data = dataset)
-summary(reg2)
-ggplot(data = dataset, aes(x = churn, y = annualincome)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Call Drop Rate
-
-```{r calldroprate, message=FALSE, warning=FALSE}
-
-summary(dataset$calldroprate)
-ggplot(dataset, aes(x = calldroprate)) +
-  geom_histogram(stat = "bin", binwidth = 0.01, colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "X Axis, binwidth: 0.01", y = "Density")
-reg3 <- lm(churn ~ calldroprate, data = dataset)
-summary(reg3)
-ggplot(data = dataset, aes(x = churn, y = calldroprate)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Call Failure Rate
-
-```{r callfailurerate, message=FALSE, warning=FALSE}
-
-summary(dataset$callfailurerate)
-ggplot(dataset, aes(x = callfailurerate)) +
-  geom_histogram(stat = "bin", binwidth = 0.01, colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "X Axis, binwidth: 0.01", y = "Density")
-reg4 <- lm(churn ~ callfailurerate, data = dataset)
-summary(reg4)
-ggplot(data = dataset, aes(x = churn, y = callfailurerate)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Customer Suspension
-
-Due to the high number of suspensions (20026 observations) compared to the non-suspended customers, we suspect CRM systems to technically suspend customers in a lot of cases, which might not always be perceived as suspension by the clients. Suspension will be removed from the predictors.
-
-```{r customersuspended, message=FALSE, warning=FALSE}
-
-summary(dataset$customersuspended)
-ggplot(dataset, aes(customersuspended, ..count..)) +
-  geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Customer Suspended", y = "Volume")
-reg5 <- lm(churn ~ customersuspended, data = dataset)
-summary(reg5)
-ggplot(data = dataset, aes(x = churn, y = customersuspended)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Education
-
-```{r education, message=FALSE, warning=FALSE}
-
-summary(dataset$education)
-ggplot(dataset, aes(education, ..count..)) +
-  geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Education", y = "Volume")
-reg6 <- lm(churn ~ education, data = dataset)
-summary(reg6)
-ggplot(data = dataset, aes(x = churn, y = education)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Gender
-
-```{r gender, message=FALSE, warning=FALSE}
-
-summary(dataset$gender)
-ggplot(dataset, aes(gender, ..count..)) +
-  geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Gender", y = "Volume")
-reg7 <- lm(churn ~ gender, data = dataset)
-summary(reg7)
-ggplot(data = dataset, aes(x = churn, y = gender)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Home Owner
-
-```{r homeowner, message=FALSE, warning=FALSE}
-
-summary(dataset$homeowner)
-ggplot(dataset, aes(homeowner, ..count..)) +
-  geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Home Owner", y = "Volume")
-reg8 <- lm(churn ~ homeowner, data = dataset)
-summary(reg8)
-ggplot(data = dataset, aes(x = churn, y = homeowner)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Marital Status
-
-```{r maritalstatus, message=FALSE, warning=FALSE}
-
-summary(dataset$maritalstatus)
-ggplot(dataset, aes(maritalstatus, ..count..)) +
-  geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Marital Status", y = "Volume")
-reg9 <- lm(churn ~ maritalstatus, data = dataset)
-summary(reg9)
-ggplot(data = dataset, aes(x = churn, y = maritalstatus)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Monthly Billed Amount
-
-```{r monthlybilledamount, message=FALSE, warning=FALSE}
-
-summary(dataset$monthlybilledamount)
-ggplot(dataset, aes(x = monthlybilledamount)) +
-  geom_histogram(stat = "bin", binwidth = 10, colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "X Axis, binwidth: 10", y = "Density")
-reg10 <- lm(churn ~ monthlybilledamount, data = dataset)
-summary(reg10)
-ggplot(data = dataset, aes(x = churn, y = monthlybilledamount)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: No Additional Lines
-
-As none of the observed customers have additional lines, this variable will be removed from the predictors.
-
-```{r noadditionallines, message=FALSE, warning=FALSE}
-
-summary(dataset$noadditionallines)
-
-
-```
-
-## Predictor: Number of Complaints
-
-```{r numberofcomplaints, message=FALSE, warning=FALSE}
-
-summary(dataset$numberofcomplaints)
-ggplot(dataset, aes(x = numberofcomplaints)) +
-  geom_histogram(stat = "bin", binwidth = 1, colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "X Axis, binwidth: 1", y = "Density")
-reg11 <- lm(churn ~ numberofcomplaints, data = dataset)
-summary(reg11)
-ggplot(data = dataset, aes(x = churn, y = numberofcomplaints)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Number of Month Unpaid
-
-```{r numberofmonthunpaid, message=FALSE, warning=FALSE}
-
-summary(dataset$numberofmonthunpaid)
-ggplot(dataset, aes(x = numberofmonthunpaid)) +
-  geom_histogram(stat = "bin", binwidth = 1, colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "X Axis, binwidth: 1", y = "Density")
-reg12 <- lm(churn ~ numberofmonthunpaid, data = dataset)
-summary(reg12)
-ggplot(data = dataset, aes(x = churn, y = numberofmonthunpaid)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Number of Days when the Contract Equipment Plan is Expiring
-
-```{r numdayscontractequipmentplanexpiring, message=FALSE, warning=FALSE}
-
-summary(dataset$numdayscontractequipmentplanexpiring)
-ggplot(dataset, aes(x = numdayscontractequipmentplanexpiring)) +
-  geom_histogram(stat = "bin", binwidth = 10, colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "X Axis, binwidth: 10", y = "Density")
-reg13 <- lm(churn ~ numdayscontractequipmentplanexpiring, data = dataset)
-summary(reg13)
-ggplot(data = dataset, aes(x = churn, y = numdayscontractequipmentplanexpiring)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Occupation
-
-```{r occupation, message=FALSE, warning=FALSE}
-
-summary(dataset$occupation)
-ggplot(dataset, aes(occupation, ..count..)) +
-  geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Occupation", y = "Volume")
-reg14 <- lm(churn ~ occupation, data = dataset)
-summary(reg14)
-ggplot(data = dataset, aes(x = churn, y = occupation)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Penalty to Switch
-
-```{r penaltytoswitch, message=FALSE, warning=FALSE}
-
-summary(dataset$penaltytoswitch)
-ggplot(dataset, aes(x = penaltytoswitch)) +
-  geom_histogram(stat = "bin", binwidth = 10, colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "X Axis, binwidth: 10", y = "Density")
-reg15 <- lm(churn ~ penaltytoswitch, data = dataset)
-summary(reg15)
-ggplot(data = dataset, aes(x = churn, y = penaltytoswitch)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: State
-
-```{r state, message=FALSE, warning=FALSE}
-
-summary(dataset$state)
-ggplot(dataset, aes(state, ..count..)) +
-  geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "State", y = "Volume")
-reg16 <- lm(churn ~ state, data = dataset)
-summary(reg16)
-
-```
-
-## Predictor: Total Minutes Used in Last Month
-
-```{r totalminsusedinlastmonth, message=FALSE, warning=FALSE}
-
-summary(dataset$totalminsusedinlastmonth)
-ggplot(dataset, aes(x = totalminsusedinlastmonth)) +
-  geom_histogram(stat = "bin", binwidth = 50, colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "X Axis, binwidth: 50", y = "Density")
-reg17 <- lm(churn ~ totalminsusedinlastmonth, data = dataset)
-summary(reg17)
-ggplot(data = dataset, aes(x = churn, y = totalminsusedinlastmonth)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Unpaid Balance
-
-```{r unpaidbalance, message=FALSE, warning=FALSE}
-
-summary(dataset$unpaidbalance)
-ggplot(dataset, aes(x = unpaidbalance)) +
-  geom_histogram(stat = "bin", binwidth = 50, colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "X Axis, binwidth: 50", y = "Density")
-reg18 <- lm(churn ~ unpaidbalance, data = dataset)
-summary(reg18)
-ggplot(data = dataset, aes(x = churn, y = unpaidbalance)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Uses Internet Service
-
-```{r usesinternetservice, message=FALSE, warning=FALSE}
-
-summary(dataset$usesinternetservice)
-ggplot(dataset, aes(usesinternetservice, ..count..)) +
-  geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Uses Internet Service", y = "Volume")
-reg19 <- lm(churn ~ usesinternetservice, data = dataset)
-summary(reg19)
-ggplot(data = dataset, aes(x = churn, y = usesinternetservice)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Uses Voice Service
-
-```{r usesvoiceservice, message=FALSE, warning=FALSE}
-
-summary(dataset$usesvoiceservice)
-ggplot(dataset, aes(usesvoiceservice, ..count..)) +
-  geom_bar(colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "Uses Voice Service", y = "Volume")
-reg20 <- lm(churn ~ usesvoiceservice, data = dataset)
-summary(reg20)
-ggplot(data = dataset, aes(x = churn, y = usesvoiceservice)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Percentage Call Outside the Network
-
-```{r percentagecalloutsidenetwork, message=FALSE, warning=FALSE}
-
-summary(dataset$percentagecalloutsidenetwork)
-ggplot(dataset, aes(x = percentagecalloutsidenetwork)) +
-  geom_histogram(stat = "bin", binwidth = 0.1, colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "X Axis, binwidth: 0.1", y = "Density")
-reg21 <- lm(churn ~ percentagecalloutsidenetwork, data = dataset)
-summary(reg21)
-ggplot(data = dataset, aes(x = churn, y = percentagecalloutsidenetwork)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Total Call Duration
-
-The total call duration dataset is skewed to the right and will be truncated from 10001 minutes for the machine learning model.
-
-```{r totalcallduration, message=FALSE, warning=FALSE}
-
-summary(dataset$totalcallduration)
-ggplot(dataset, aes(x = totalcallduration)) +
-  geom_histogram(stat = "bin", binwidth = 1000, colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "X Axis, binwidth: 1000", y = "Density")
-reg22 <- lm(churn ~ totalcallduration, data = dataset)
-summary(reg22)
-ggplot(data = dataset, aes(x = churn, y = totalcallduration)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Predictor: Average Call Duration
-
-```{r avgcallduration, message=FALSE, warning=FALSE}
-
-summary(dataset$avgcallduration)
-ggplot(dataset, aes(x = avgcallduration)) +
-  geom_histogram(stat = "bin", binwidth = 100, colour = "deepskyblue3", fill = "deepskyblue3") + labs(x = "X Axis, binwidth: 100", y = "Density")
-reg23 <- lm(churn ~ avgcallduration, data = dataset)
-summary(reg23)
-ggplot(data = dataset, aes(x = churn, y = avgcallduration)) +
-  geom_point(size = 1.5, colour = "deepskyblue3") +
-  geom_smooth(method = "lm", colour = "seagreen3", se = T)
-
-```
-
-## Prepare Final Dataset
-
-Preparing the final dataset with the following transformations:
-- removing Customer Suspension variables
-- removing No Additional Lines variables
-- anonymizing dataset by removing Customer ID and Calling Number
-- removing Year and Month referring to the data recording timeframe of the churn
-- truncating Total Call Duration from 10001
-- creating boolean variables from Education, Gender, Homeowner, Marital Status, Occupation, State, Uses Internet Service and Uses Voice Service
-
-```{r finaldataset, message=FALSE, warning=FALSE}
-
-finaldataset <- subset(dataset, dataset$totalcallduration < 10001)
-finaldataset$customersuspended <- NULL
-finaldataset$noadditionallines <- NULL
-finaldataset$customerid <- NULL
-finaldataset$customercallingnum <- NULL
-finaldataset$month <- NULL
-finaldataset$year <- NULL
-
-lst <- strsplit(as.character(finaldataset$education),"-")
-lvl <- unique(unlist(lst))
-res <- data.frame(do.call(rbind,lapply(lst, function(x) table(factor(x, levels=lvl)))), stringsAsFactors=FALSE)
-finaldataset <- cbind(finaldataset, res)
-finaldataset$education <- NULL
-
-lst <- strsplit(as.character(finaldataset$gender),"-")
-lvl <- unique(unlist(lst))
-res <- data.frame(do.call(rbind,lapply(lst, function(x) table(factor(x, levels=lvl)))), stringsAsFactors=FALSE)
-finaldataset <- cbind(finaldataset, res)
-finaldataset$gender <- NULL
-
-lst <- strsplit(as.character(finaldataset$homeowner),"-")
-lvl <- unique(unlist(lst))
-res <- data.frame(do.call(rbind,lapply(lst, function(x) table(factor(x, levels=lvl)))), stringsAsFactors=FALSE)
-colnames(res)[which(names(res) == "Yes")] <- "homeowner_yes"
-colnames(res)[which(names(res) == "No")] <- "homeowner_no"
-finaldataset <- cbind(finaldataset, res)
-finaldataset$homeowner <- NULL
-
-lst <- strsplit(as.character(finaldataset$maritalstatus),"-")
-lvl <- unique(unlist(lst))
-res <- data.frame(do.call(rbind,lapply(lst, function(x) table(factor(x, levels=lvl)))), stringsAsFactors=FALSE)
-finaldataset <- cbind(finaldataset, res)
-finaldataset$maritalstatus <- NULL
-
-lst <- strsplit(as.character(finaldataset$occupation),"-")
-lvl <- unique(unlist(lst))
-res <- data.frame(do.call(rbind,lapply(lst, function(x) table(factor(x, levels=lvl)))), stringsAsFactors=FALSE)
-finaldataset <- cbind(finaldataset, res)
-finaldataset$occupation <- NULL
-
-lst <- strsplit(as.character(finaldataset$state),"-")
-lvl <- unique(unlist(lst))
-res <- data.frame(do.call(rbind,lapply(lst, function(x) table(factor(x, levels=lvl)))), stringsAsFactors=FALSE)
-finaldataset <- cbind(finaldataset, res)
-finaldataset$state <- NULL
-
-lst <- strsplit(as.character(finaldataset$usesinternetservice),"-")
-lvl <- unique(unlist(lst))
-res <- data.frame(do.call(rbind,lapply(lst, function(x) table(factor(x, levels=lvl)))), stringsAsFactors=FALSE)
-colnames(res)[which(names(res) == "Yes")] <- "usesinternetservice_yes"
-colnames(res)[which(names(res) == "No")] <- "usesinternetservice_no"
-finaldataset <- cbind(finaldataset, res)
-finaldataset$usesinternetservice <- NULL
-
-lst <- strsplit(as.character(finaldataset$usesvoiceservice),"-")
-lvl <- unique(unlist(lst))
-res <- data.frame(do.call(rbind,lapply(lst, function(x) table(factor(x, levels=lvl)))), stringsAsFactors=FALSE)
-colnames(res)[which(names(res) == "Yes")] <- "usesvoiceservice_yes"
-colnames(res)[which(names(res) == "No")] <- "usesvoiceservice_no"
-finaldataset <- cbind(finaldataset, res)
-finaldataset$usesvoiceservice <- NULL
-
-```
-
-## Split Train/Test Datasets
-
-```{r split, message=FALSE, warning=FALSE}
-
-set.seed(123)
-N <- nrow(finaldataset)
-idx_train <- sample(1:N,N/2)
-idx_valid <- sample(base::setdiff(1:N, idx_train), N/4)
-idx_test <- base::setdiff(base::setdiff(1:N, idx_train),idx_valid)
-d_train <- finaldataset[idx_train,]
-d_valid <- finaldataset[idx_valid,]
-d_test  <- finaldataset[idx_test,]
-
-```
-
-## Modeling
-
-## Setup
-
-```{r upload, message=FALSE, warning=FALSE}
-
-library(h2o)
-localH2O = h2o.init()
-
-dx_train <- as.h2o(d_train)
-dx_train$churn <- as.factor(dx_train$churn)
-dx_valid <- as.h2o(d_valid)
-dx_valid$churn <- as.factor(dx_valid$churn)
-dx_test <- as.h2o(d_test)
-dx_test$churn <- as.factor(dx_test$churn)
-
-```
-
-## Random forest 1
-
-Training performance: 0.66, test performance: 0.67
-
-```{r randomforest1, message=FALSE, warning=FALSE}
-
-{
-  md_rf <- h2o.randomForest(x = c(2:83), 
-                            y = "churn", 
-                            training_frame = dx_train, 
-                            mtries = -1, 
-                            ntrees = 100, 
-                            max_depth = 5, 
-                            nbins = 20)
-}
-
-md_rf
-
-h2o.auc(md_rf)
-
-h2o.auc(h2o.performance(md_rf, dx_test))
-
-```
-
-## Random forest 2
-
-Training performance: 0.77, test performance: 0.79
-
-```{r randomforest2, message=FALSE, warning=FALSE}
-
-{
-  md_rf <- h2o.randomForest(x = c(2:83), 
-                            y = "churn", 
-                            training_frame = dx_train, 
-                            mtries = -1, 
-                            ntrees = 200, 
-                            max_depth = 10, 
-                            nbins = 20)
-}
-
-md_rf
-
-h2o.auc(md_rf)
-
-h2o.auc(h2o.performance(md_rf, dx_test))
-
-```
-
-## Random forest 3
-
-Training performance: 0.84, test performance: 0.84
-
-```{r randomforest3, message=FALSE, warning=FALSE}
-
-{
-  md_rf <- h2o.randomForest(x = c(2:83), 
-                            y = "churn", 
-                            training_frame = dx_train, 
-                            mtries = -1, 
-                            ntrees = 1000, 
-                            max_depth = 15, 
-                            nbins = 20)
-}
-
-md_rf
-
-h2o.auc(md_rf)
-
-h2o.auc(h2o.performance(md_rf, dx_test))
-
-```
-
-## GBM 1
-
-Training performance: 0.74, test performance: 0.65
-
-```{r gbm1, message=FALSE, warning=FALSE}
-
-{
-  md_gbm <- h2o.gbm(x = c(2:83), 
-                    y = "churn", 
-                    training_frame = dx_train, 
-                    ntrees = 100, 
-                    max_depth = 5, 
-                    learn_rate = 0.01) 
-}
-
-md_gbm
-
-h2o.auc(md_gbm)
-
-h2o.auc(h2o.performance(md_gbm, dx_test))
-
-```
-
-## GBM 2
-
-Training performance: 0.99, test performance: 0.79
-
-```{r gbm2, message=FALSE, warning=FALSE}
-
-{
-  md_gbm <- h2o.gbm(x = c(2:83), 
-                    y = "churn", 
-                    training_frame = dx_train, 
-                    ntrees = 200, 
-                    max_depth = 10, 
-                    learn_rate = 0.03) 
-}
-
-md_gbm
-
-h2o.auc(md_gbm)
-
-h2o.auc(h2o.performance(md_gbm, dx_test))
-
-```
-
-## GBM 3
-
-Training performance: 1, test performance: 0.82
-
-```{r gbm3, message=FALSE, warning=FALSE}
-
-{
-  md_gbm <- h2o.gbm(x = c(2:83), 
-                    y = "churn", 
-                    training_frame = dx_train, 
-                    ntrees = 1000, 
-                    max_depth = 15, 
-                    learn_rate = 0.1) 
-}
-
-md_gbm
-
-h2o.auc(md_gbm)
-
-h2o.auc(h2o.performance(md_gbm, dx_test))
-
-```
-
-## Results
-
-Model complexities and computing times grow from 1 to 3.
-
-Random forest
-
-1: Training performance: 0.66, test performance: 0.67
-
-2: Training performance: 0.77, test performance: 0.79
-
-3: Training performance: 0.84, test performance: 0.84
-
-GBM 
-
-1: Training performance: 0.74, test performance: 0.65
-
-2: Training performance: 0.99, test performance: 0.79
-
-3: Training performance: 1, test performance: 0.82
-
-Chosen model: random forest 3
-
-- test performance of 0.84
-
-- ntrees = 1000
-
-- max_depth = 15
+We consider our chosen model a successful one predicting churn for our future data with 84% precision.
 
 
 # Halt and catch fire
