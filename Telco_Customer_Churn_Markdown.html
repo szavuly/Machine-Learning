@@ -1158,6 +1158,15 @@ finaldataset$usesvoiceservice &lt;- NULL</code></pre>
 <div id="split-traintest-datasets" class="section level2">
 <h2>Split Train/Test Datasets</h2>
 <p>We split our dataset into training, validation and test sets. We will keep our test set untouched until the selection of our final model.</p>
+<<<<<<< HEAD
+<p>The split will be the following:</p>
+<ul>
+<li><p>50% for training</p></li>
+<li><p>25% for validation</p></li>
+<li><p>25% for testing</p></li>
+</ul>
+=======
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
 <pre class="r"><code>set.seed(123)
 N &lt;- nrow(finaldataset)
 idx_train &lt;- sample(1:N,N/2)
@@ -1169,24 +1178,51 @@ d_test  &lt;- finaldataset[idx_test,]</code></pre>
 </div>
 <div id="modeling" class="section level2">
 <h2>Modeling</h2>
+<p>We took the following aspects into account when choosing our model:</p>
+<ul>
+<li><p>business question that needs to be answered: we intend to build a classifier predicting whether a customer will churn or not</p></li>
+<li><p>volume and structure of the data: we are going to work with more than 20k observations and 29 different variables (some of them will be transformed into boolean variables)</p></li>
+<li><p>readiness of the modeler: our beginner level of modeling capability drives us towards algorithms which tend to perform well without too much tweaking</p></li>
+</ul>
 </div>
 <div id="setup" class="section level2">
 <h2>Setup</h2>
+<<<<<<< HEAD
+<p>We will use H2O as our machine learning engine and will use 3 types of random forest and 3 types of gradient boosting methods. Random forests and GBMs are top choices when it comes to situations cited above. We will also be able to do a simple grid search with 3 different hyperparameters that we can more easily understand (number of trees, maximum depth and learning rate).</p>
+</div>
+<div id="random-forest-choices" class="section level1">
+<h1>Random forest choices:</h1>
+<ul>
+<li><p>model 1: ntrees = 100, max_depth = 5,</p></li>
+<li><p>model 2: ntrees = 200, max_depth = 10,</p></li>
+<li><p>ntrees = 1000, max_depth = 15.</p></li>
+</ul>
+=======
 <p>We will use H2O as our machine learning engine and will use 3 types of random forest and 3 types of gradient boosting methods.</p>
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
 <pre class="r"><code>library(h2o)
 localH2O = h2o.init()</code></pre>
 <pre><code>## 
 ## H2O is not running yet, starting it now...
 ## 
 ## Note:  In case of errors look at the following log files:
+<<<<<<< HEAD
+##     C:\Users\kszavuly\AppData\Local\Temp\RtmpgRZMTo/h2o_kszavuly_started_from_r.out
+##     C:\Users\kszavuly\AppData\Local\Temp\RtmpgRZMTo/h2o_kszavuly_started_from_r.err
+=======
 ##     C:\Users\kszavuly\AppData\Local\Temp\RtmpaglZPi/h2o_kszavuly_started_from_r.out
 ##     C:\Users\kszavuly\AppData\Local\Temp\RtmpaglZPi/h2o_kszavuly_started_from_r.err
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
 ## 
 ## 
-## Starting H2O JVM and connecting: ... Connection successful!
+## Starting H2O JVM and connecting: .. Connection successful!
 ## 
 ## R is connected to the H2O cluster: 
+<<<<<<< HEAD
+##     H2O cluster uptime:         6 seconds 27 milliseconds 
+=======
 ##     H2O cluster uptime:         9 seconds 668 milliseconds 
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
 ##     H2O cluster version:        3.10.2.2 
 ##     H2O cluster version age:    19 days  
 ##     H2O cluster name:           H2O_started_from_R_kszavuly_unh078 
@@ -1225,7 +1261,6 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |                                                                       
   |=================================================================| 100%</code></pre>
 <pre class="r"><code>dx_test$churn &lt;- as.factor(dx_test$churn)</code></pre>
-</div>
 <div id="random-forest-1" class="section level2">
 <h2>Random forest 1</h2>
 <p>Training performance: 0.65, test performance: 0.66</p>
@@ -1244,13 +1279,23 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |                                                                       
   |=                                                                |   2%
   |                                                                       
+<<<<<<< HEAD
+  |======                                                           |  10%
+=======
   |===                                                              |   4%
   |                                                                       
   |======                                                           |   9%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
   |==========                                                       |  16%
   |                                                                       
+<<<<<<< HEAD
+  |============                                                     |  19%
+  |                                                                       
+  |=============================                                    |  45%
+=======
   |====================================                             |  55%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
   |=================================================================| 100%</code></pre>
 <pre class="r"><code>md_rf</code></pre>
@@ -1258,18 +1303,60 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
 ## ==============
 ## 
 ## H2OBinomialModel: drf
+<<<<<<< HEAD
+## Model ID:  DRF_model_R_1485965587274_1 
+## Model Summary: 
+##   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
+## 1             100                      100               36837         5
+##   max_depth mean_depth min_leaves max_leaves mean_leaves
+## 1         5    5.00000         13         31    24.29000
+=======
 ## Model ID:  DRF_model_R_1485885978964_1 
 ## Model Summary: 
 ##   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 ## 1             100                      100               36808         5
 ##   max_depth mean_depth min_leaves max_leaves mean_leaves
 ## 1         5    5.00000         14         32    24.28000
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
 ## 
 ## 
 ## H2OBinomialMetrics: drf
 ## ** Reported on training data. **
 ## ** Metrics reported on Out-Of-Bag training samples **
 ## 
+<<<<<<< HEAD
+## MSE:  0.08011725
+## RMSE:  0.2830499
+## LogLoss:  0.293424
+## Mean Per-Class Error:  0.4057361
+## AUC:  0.6527817
+## Gini:  0.3055633
+## 
+## Confusion Matrix for F1-optimal threshold:
+##           0    1    Error         Rate
+## 0      7927 1362 0.146625   =1362/9289
+## 1       609  307 0.664847     =609/916
+## Totals 8536 1669 0.193141  =1971/10205
+## 
+## Maximum Metrics: Maximum metrics at their respective thresholds
+##                         metric threshold    value idx
+## 1                       max f1  0.106731 0.237524 152
+## 2                       max f2  0.087633 0.359469 246
+## 3                 max f0point5  0.121914 0.233497  92
+## 4                 max accuracy  0.154501 0.911122  33
+## 5                max precision  0.280910 1.000000   0
+## 6                   max recall  0.054123 1.000000 398
+## 7              max specificity  0.280910 1.000000   0
+## 8             max absolute_mcc  0.140256 0.152033  50
+## 9   max min_per_class_accuracy  0.089213 0.606987 238
+## 10 max mean_per_class_accuracy  0.093247 0.613296 220
+## 
+## Gains/Lift Table: Extract with `h2o.gainsLift(&lt;model&gt;, &lt;data&gt;)` or `h2o.gainsLift(&lt;model&gt;, valid=&lt;T/F&gt;, xval=&lt;T/F&gt;)`</code></pre>
+<pre class="r"><code>h2o.auc(md_rf)</code></pre>
+<pre><code>## [1] 0.6527817</code></pre>
+<pre class="r"><code>h2o.auc(h2o.performance(md_rf, dx_valid))</code></pre>
+<pre><code>## [1] 0.6680386</code></pre>
+=======
 ## MSE:  0.07993997
 ## RMSE:  0.2827366
 ## LogLoss:  0.2923488
@@ -1301,6 +1388,7 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
 <pre><code>## [1] 0.6659433</code></pre>
 <pre class="r"><code>h2o.auc(h2o.performance(md_rf, dx_valid))</code></pre>
 <pre><code>## [1] 0.670324</code></pre>
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
 </div>
 <div id="random-forest-2" class="section level2">
 <h2>Random forest 2</h2>
@@ -1326,6 +1414,15 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |                                                                       
   |========                                                         |  12%
   |                                                                       
+<<<<<<< HEAD
+  |=======================                                          |  36%
+  |                                                                       
+  |=====================================                            |  57%
+  |                                                                       
+  |===================================================              |  79%
+  |                                                                       
+  |==============================================================   |  95%
+=======
   |==================                                               |  27%
   |                                                                       
   |==============================                                   |  46%
@@ -1335,6 +1432,7 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |==================================================               |  77%
   |                                                                       
   |=======================================================          |  84%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
   |=================================================================| 100%</code></pre>
 <pre class="r"><code>md_rf</code></pre>
@@ -1342,18 +1440,60 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
 ## ==============
 ## 
 ## H2OBinomialModel: drf
+<<<<<<< HEAD
+## Model ID:  DRF_model_R_1485965587274_44 
+## Model Summary: 
+##   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
+## 1             200                      200              431410        10
+##   max_depth mean_depth min_leaves max_leaves mean_leaves
+## 1        10   10.00000         86        276   166.41000
+=======
 ## Model ID:  DRF_model_R_1485885978964_32 
 ## Model Summary: 
 ##   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 ## 1             200                      200              437429        10
 ##   max_depth mean_depth min_leaves max_leaves mean_leaves
 ## 1        10   10.00000         89        270   168.80000
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
 ## 
 ## 
 ## H2OBinomialMetrics: drf
 ## ** Reported on training data. **
 ## ** Metrics reported on Out-Of-Bag training samples **
 ## 
+<<<<<<< HEAD
+## MSE:  0.07449326
+## RMSE:  0.2729345
+## LogLoss:  0.2689846
+## Mean Per-Class Error:  0.3244163
+## AUC:  0.7727427
+## Gini:  0.5454853
+## 
+## Confusion Matrix for F1-optimal threshold:
+##           0   1    Error        Rate
+## 0      8951 338 0.036387   =338/9289
+## 1       561 355 0.612445    =561/916
+## Totals 9512 693 0.088094  =899/10205
+## 
+## Maximum Metrics: Maximum metrics at their respective thresholds
+##                         metric threshold    value idx
+## 1                       max f1  0.143537 0.441268 129
+## 2                       max f2  0.114265 0.456121 185
+## 3                 max f0point5  0.166108 0.537243 101
+## 4                 max accuracy  0.166108 0.924645 101
+## 5                max precision  0.414629 1.000000   0
+## 6                   max recall  0.035866 1.000000 395
+## 7              max specificity  0.414629 1.000000   0
+## 8             max absolute_mcc  0.156078 0.410780 113
+## 9   max min_per_class_accuracy  0.094383 0.692140 237
+## 10 max mean_per_class_accuracy  0.110721 0.702148 194
+## 
+## Gains/Lift Table: Extract with `h2o.gainsLift(&lt;model&gt;, &lt;data&gt;)` or `h2o.gainsLift(&lt;model&gt;, valid=&lt;T/F&gt;, xval=&lt;T/F&gt;)`</code></pre>
+<pre class="r"><code>h2o.auc(md_rf)</code></pre>
+<pre><code>## [1] 0.7727427</code></pre>
+<pre class="r"><code>h2o.auc(h2o.performance(md_rf, dx_valid))</code></pre>
+<pre><code>## [1] 0.7864449</code></pre>
+=======
 ## MSE:  0.07431205
 ## RMSE:  0.2726024
 ## LogLoss:  0.2682445
@@ -1385,6 +1525,7 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
 <pre><code>## [1] 0.7788253</code></pre>
 <pre class="r"><code>h2o.auc(h2o.performance(md_rf, dx_valid))</code></pre>
 <pre><code>## [1] 0.7858859</code></pre>
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
 </div>
 <div id="random-forest-3" class="section level2">
 <h2>Random forest 3</h2>
@@ -1408,30 +1549,52 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |                                                                       
   |===                                                              |   4%
   |                                                                       
+<<<<<<< HEAD
+  |===                                                              |   5%
+=======
   |=====                                                            |   7%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
   |======                                                           |  10%
   |                                                                       
   |========                                                         |  12%
   |                                                                       
+<<<<<<< HEAD
+  |========                                                         |  13%
+  |                                                                       
+  |=========                                                        |  14%
+=======
   |=========                                                        |  14%
   |                                                                       
   |==========                                                       |  16%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
-  |============                                                     |  18%
+  |===========                                                      |  17%
   |                                                                       
   |=============                                                    |  20%
+<<<<<<< HEAD
+  |                                                                       
+  |===============                                                  |  22%
+=======
   |                                                                       
   |==============                                                   |  22%
   |                                                                       
   |================                                                 |  24%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
-  |=================                                                |  26%
+  |================                                                 |  25%
   |                                                                       
   |==================                                               |  28%
   |                                                                       
   |===================                                              |  29%
   |                                                                       
+<<<<<<< HEAD
+  |=====================                                            |  32%
+  |                                                                       
+  |=======================                                          |  35%
+  |                                                                       
+  |========================                                         |  38%
+=======
   |====================                                             |  31%
   |                                                                       
   |=====================                                            |  33%
@@ -1443,35 +1606,67 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |=========================                                        |  39%
   |                                                                       
   |===========================                                      |  41%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
-  |=============================                                    |  44%
+  |==========================                                       |  40%
   |                                                                       
-  |==============================                                   |  47%
+  |============================                                     |  43%
   |                                                                       
+<<<<<<< HEAD
+  |==============================                                   |  46%
+  |                                                                       
+  |===============================                                  |  48%
+=======
   |================================                                 |  49%
   |                                                                       
   |=================================                                |  51%
   |                                                                       
   |===================================                              |  53%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
-  |====================================                             |  55%
+  |=================================                                |  51%
   |                                                                       
+<<<<<<< HEAD
+  |===================================                              |  54%
+  |                                                                       
+  |=====================================                            |  56%
+=======
   |=====================================                            |  57%
   |                                                                       
   |=======================================                          |  60%
   |                                                                       
   |========================================                         |  62%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
-  |==========================================                       |  64%
+  |======================================                           |  59%
   |                                                                       
+<<<<<<< HEAD
+  |========================================                         |  62%
+  |                                                                       
+  |==========================================                       |  65%
+  |                                                                       
+  |===========================================                      |  66%
+=======
   |===========================================                      |  66%
   |                                                                       
   |============================================                     |  68%
   |                                                                       
   |==============================================                   |  70%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
-  |===============================================                  |  72%
+  |============================================                     |  68%
   |                                                                       
+<<<<<<< HEAD
+  |==============================================                   |  70%
+  |                                                                       
+  |================================================                 |  73%
+  |                                                                       
+  |=================================================                |  76%
+  |                                                                       
+  |===================================================              |  78%
+  |                                                                       
+  |====================================================             |  81%
+=======
   |================================================                 |  74%
   |                                                                       
   |==================================================               |  76%
@@ -1481,22 +1676,28 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |====================================================             |  80%
   |                                                                       
   |======================================================           |  83%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
-  |=======================================================          |  85%
+  |======================================================           |  83%
   |                                                                       
+<<<<<<< HEAD
+  |========================================================         |  86%
+  |                                                                       
+  |==========================================================       |  89%
+  |                                                                       
+=======
   |=========================================================        |  87%
   |                                                                       
   |==========================================================       |  89%
   |                                                                       
   |===========================================================      |  90%
   |                                                                       
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |============================================================     |  92%
   |                                                                       
   |=============================================================    |  94%
   |                                                                       
   |===============================================================  |  97%
-  |                                                                       
-  |================================================================ |  99%
   |                                                                       
   |=================================================================| 100%</code></pre>
 <pre class="r"><code>md_rf</code></pre>
@@ -1504,18 +1705,61 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
 ## ==============
 ## 
 ## H2OBinomialModel: drf
+<<<<<<< HEAD
+## Model ID:  DRF_model_R_1485965587274_107 
+## Model Summary: 
+##   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
+## 1            1000                     1000             5770225        15
+##   max_depth mean_depth min_leaves max_leaves mean_leaves
+## 1        15   15.00000        208        715   452.92600
+=======
 ## Model ID:  DRF_model_R_1485885978964_87 
 ## Model Summary: 
 ##   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 ## 1            1000                     1000             5818399        15
 ##   max_depth mean_depth min_leaves max_leaves mean_leaves
 ## 1        15   15.00000        196        716   456.80200
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
 ## 
 ## 
 ## H2OBinomialMetrics: drf
 ## ** Reported on training data. **
 ## ** Metrics reported on Out-Of-Bag training samples **
 ## 
+<<<<<<< HEAD
+## MSE:  0.06406414
+## RMSE:  0.2531089
+## LogLoss:  0.2343092
+## Mean Per-Class Error:  0.2498317
+## AUC:  0.8413747
+## Gini:  0.6827495
+## 
+## Confusion Matrix for F1-optimal threshold:
+##           0   1    Error        Rate
+## 0      9211  78 0.008397    =78/9289
+## 1       450 466 0.491266    =450/916
+## Totals 9661 544 0.051739  =528/10205
+## 
+## Maximum Metrics: Maximum metrics at their respective thresholds
+##                         metric threshold    value idx
+## 1                       max f1  0.189808 0.638356 142
+## 2                       max f2  0.136625 0.584253 188
+## 3                 max f0point5  0.212607 0.775988 127
+## 4                 max accuracy  0.209378 0.949045 129
+## 5                max precision  0.547856 1.000000   0
+## 6                   max recall  0.024277 1.000000 396
+## 7              max specificity  0.547856 1.000000   0
+## 8             max absolute_mcc  0.209378 0.639148 129
+## 9   max min_per_class_accuracy  0.095498 0.752180 250
+## 10 max mean_per_class_accuracy  0.131313 0.775755 195
+## 
+## Gains/Lift Table: Extract with `h2o.gainsLift(&lt;model&gt;, &lt;data&gt;)` or `h2o.gainsLift(&lt;model&gt;, valid=&lt;T/F&gt;, xval=&lt;T/F&gt;)`</code></pre>
+<pre class="r"><code>h2o.auc(md_rf)</code></pre>
+<pre><code>## [1] 0.8413747</code></pre>
+<pre class="r"><code>h2o.auc(h2o.performance(md_rf, dx_valid))</code></pre>
+<pre><code>## [1] 0.8592065</code></pre>
+</div>
+=======
 ## MSE:  0.06390655
 ## RMSE:  0.2527974
 ## LogLoss:  0.2336877
@@ -1547,7 +1791,15 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
 <pre><code>## [1] 0.8423363</code></pre>
 <pre class="r"><code>h2o.auc(h2o.performance(md_rf, dx_valid))</code></pre>
 <pre><code>## [1] 0.8577116</code></pre>
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
 </div>
+<div id="gbm-choices" class="section level1">
+<h1>GBM choices:</h1>
+<ul>
+<li><p>model 1: ntrees = 100, max_depth = 5, learn_rate: 0.01,</p></li>
+<li><p>model 2: ntrees = 200, max_depth = 10, learn_rate: 0.03,</p></li>
+<li><p>ntrees = 1000, max_depth = 15, learn_rate: 0.1.</p></li>
+</ul>
 <div id="gbm-1" class="section level2">
 <h2>GBM 1</h2>
 <p>Training performance: 0.74, test performance: 0.63. We already can compare with our first interation of the random forest performing better and more consistent across the training and the validation set.</p>
@@ -1563,7 +1815,7 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |                                                                       
   |                                                                 |   0%
   |                                                                       
-  |======                                                           |  10%
+  |=======                                                          |  11%
   |                                                                       
   |============                                                     |  19%
   |                                                                       
@@ -1581,10 +1833,17 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
 ## ==============
 ## 
 ## H2OBinomialModel: gbm
+<<<<<<< HEAD
+## Model ID:  GBM_model_R_1485965587274_170 
+## Model Summary: 
+##   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
+## 1             100                      100               36079         5
+=======
 ## Model ID:  GBM_model_R_1485885978964_140 
 ## Model Summary: 
 ##   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 ## 1             100                      100               36081         5
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
 ##   max_depth mean_depth min_leaves max_leaves mean_leaves
 ## 1         5    5.00000         19         30    23.70000
 ## 
@@ -1647,6 +1906,19 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |                                                                       
   |=======                                                          |  11%
   |                                                                       
+<<<<<<< HEAD
+  |===========                                                      |  18%
+  |                                                                       
+  |================                                                 |  24%
+  |                                                                       
+  |====================                                             |  30%
+  |                                                                       
+  |=======================                                          |  36%
+  |                                                                       
+  |===========================                                      |  42%
+  |                                                                       
+  |===============================                                  |  48%
+=======
   |===========                                                      |  17%
   |                                                                       
   |==============                                                   |  22%
@@ -1660,20 +1932,33 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |============================                                     |  43%
   |                                                                       
   |================================                                 |  50%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
   |===================================                              |  54%
   |                                                                       
   |=======================================                          |  60%
   |                                                                       
+<<<<<<< HEAD
+  |==========================================                       |  64%
+  |                                                                       
+  |==============================================                   |  70%
+=======
   |===========================================                      |  66%
   |                                                                       
   |===============================================                  |  72%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
-  |====================================================             |  80%
+  |==================================================               |  77%
   |                                                                       
-  |=====================================================            |  82%
+  |======================================================           |  83%
   |                                                                       
+<<<<<<< HEAD
+  |==========================================================       |  90%
+  |                                                                       
+  |===========================================================      |  92%
+=======
   |=========================================================        |  88%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
   |==============================================================   |  95%
   |                                                                       
@@ -1683,10 +1968,17 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
 ## ==============
 ## 
 ## H2OBinomialModel: gbm
+<<<<<<< HEAD
+## Model ID:  GBM_model_R_1485965587274_246 
+## Model Summary: 
+##   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
+## 1             200                      200              326513        10
+=======
 ## Model ID:  GBM_model_R_1485885978964_212 
 ## Model Summary: 
 ##   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 ## 1             200                      200              326510        10
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
 ##   max_depth mean_depth min_leaves max_leaves mean_leaves
 ## 1        10   10.00000         54        188   124.64500
 ## 
@@ -1745,9 +2037,11 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |                                                                       
   |=                                                                |   2%
   |                                                                       
+  |==                                                               |   2%
+  |                                                                       
   |==                                                               |   3%
   |                                                                       
-  |==                                                               |   4%
+  |===                                                              |   4%
   |                                                                       
   |===                                                              |   4%
   |                                                                       
@@ -1758,8 +2052,11 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |====                                                             |   6%
   |                                                                       
   |====                                                             |   7%
+<<<<<<< HEAD
+=======
   |                                                                       
   |=====                                                            |   7%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
   |=====                                                            |   8%
   |                                                                       
@@ -1767,13 +2064,19 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |                                                                       
   |======                                                           |  10%
   |                                                                       
+  |=======                                                          |  10%
+  |                                                                       
   |=======                                                          |  11%
+  |                                                                       
+  |=======                                                          |  12%
   |                                                                       
   |========                                                         |  12%
   |                                                                       
-  |========                                                         |  13%
+  |=========                                                        |  13%
   |                                                                       
   |=========                                                        |  14%
+  |                                                                       
+  |=========                                                        |  15%
   |                                                                       
   |==========                                                       |  15%
   |                                                                       
@@ -1793,7 +2096,11 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |                                                                       
   |==============                                                   |  22%
   |                                                                       
+<<<<<<< HEAD
+  |===============                                                  |  23%
+=======
   |===============                                                  |  22%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
   |===============                                                  |  24%
   |                                                                       
@@ -1802,6 +2109,8 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |================                                                 |  25%
   |                                                                       
   |=================                                                |  26%
+  |                                                                       
+  |=================                                                |  27%
   |                                                                       
   |==================                                               |  27%
   |                                                                       
@@ -1824,6 +2133,8 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |========================                                         |  36%
   |                                                                       
   |========================                                         |  37%
+  |                                                                       
+  |========================                                         |  38%
   |                                                                       
   |=========================                                        |  38%
   |                                                                       
@@ -1855,6 +2166,8 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |                                                                       
   |=================================                                |  50%
   |                                                                       
+  |=================================                                |  50%
+  |                                                                       
   |=================================                                |  51%
   |                                                                       
   |==================================                               |  52%
@@ -1875,6 +2188,8 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |                                                                       
   |=======================================                          |  60%
   |                                                                       
+  |=======================================                          |  61%
+  |                                                                       
   |========================================                         |  61%
   |                                                                       
   |========================================                         |  62%
@@ -1891,6 +2206,8 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |                                                                       
   |============================================                     |  68%
   |                                                                       
+  |=============================================                    |  68%
+  |                                                                       
   |=============================================                    |  69%
   |                                                                       
   |=============================================                    |  70%
@@ -1900,6 +2217,11 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |===============================================                  |  72%
   |                                                                       
   |===============================================                  |  73%
+<<<<<<< HEAD
+  |                                                                       
+  |================================================                 |  73%
+=======
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
   |================================================                 |  74%
   |                                                                       
@@ -1919,13 +2241,21 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |                                                                       
   |====================================================             |  80%
   |                                                                       
+  |====================================================             |  81%
+  |                                                                       
   |=====================================================            |  81%
   |                                                                       
   |=====================================================            |  82%
   |                                                                       
   |======================================================           |  83%
   |                                                                       
+<<<<<<< HEAD
+  |======================================================           |  84%
+  |                                                                       
+  |=======================================================          |  85%
+=======
   |=======================================================          |  84%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
   |=======================================================          |  85%
   |                                                                       
@@ -1934,8 +2264,11 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |========================================================         |  86%
   |                                                                       
   |========================================================         |  87%
+<<<<<<< HEAD
+=======
   |                                                                       
   |=========================================================        |  87%
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
   |                                                                       
   |=========================================================        |  88%
   |                                                                       
@@ -1946,6 +2279,8 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
   |===========================================================      |  91%
   |                                                                       
   |============================================================     |  92%
+  |                                                                       
+  |============================================================     |  93%
   |                                                                       
   |=============================================================    |  93%
   |                                                                       
@@ -1969,7 +2304,11 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
 ## ==============
 ## 
 ## H2OBinomialModel: gbm
+<<<<<<< HEAD
+## Model ID:  GBM_model_R_1485965587274_304 
+=======
 ## Model ID:  GBM_model_R_1485885978964_268 
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
 ## Model Summary: 
 ##   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
 ## 1            1000                     1000             3831702        15
@@ -2023,11 +2362,208 @@ dx_test &lt;- as.h2o(d_test)</code></pre>
 <p>1: Training performance: 0.74, validation performance: 0.63</p>
 <p>2: Training performance: 0.99, validation performance: 0.81</p>
 <p>3: Training performance: 1, validation performance: 0.85</p>
+<<<<<<< HEAD
+</div>
+<div id="analysis-of-the-chosen-model" class="section level2">
+<h2>Analysis of the chosen model</h2>
+<p>Our chosen model is random forest 3, performing better compared to others:</p>
+<ul>
+<li><p>validation performance is the highest with 0.85</p></li>
+<li><p>training and validation performances are very consistent, with 0.84 and 0.85 respectively</p></li>
+<li><p>computing time is better than the comparable GBM 3 model</p></li>
+<li><p>best working hyperparameters were 1000 trees with maximum depth of 15</p></li>
+</ul>
+<p>We suspect that a high precision algorithm performs best as only 12 of the predictors showed some kind of statistically significant correlation from the available 29 of the dataset. Tiny correlations among the factors can be picked up by algorithms, which are able to strengthen weak classifiers to a strong one.</p>
+</div>
+<div id="testing-the-chosen-model" class="section level2">
+<h2>Testing the chosen model</h2>
+<p>We test our chosen random forest model 3 on our test set, which was unused so far.</p>
+<pre class="r"><code>{
+  md_rf &lt;- h2o.randomForest(x = c(2:83), 
+                            y = &quot;churn&quot;, 
+                            training_frame = dx_train, 
+                            mtries = -1, 
+                            ntrees = 1000, 
+                            max_depth = 15, 
+                            nbins = 20)
+}</code></pre>
+<pre><code>## 
+  |                                                                       
+  |                                                                 |   0%
+  |                                                                       
+  |=                                                                |   1%
+  |                                                                       
+  |=                                                                |   2%
+  |                                                                       
+  |==                                                               |   3%
+  |                                                                       
+  |===                                                              |   5%
+  |                                                                       
+  |=====                                                            |   8%
+  |                                                                       
+  |=======                                                          |  11%
+  |                                                                       
+  |========                                                         |  13%
+  |                                                                       
+  |=========                                                        |  14%
+  |                                                                       
+  |===========                                                      |  16%
+  |                                                                       
+  |============                                                     |  19%
+  |                                                                       
+  |==============                                                   |  21%
+  |                                                                       
+  |===============                                                  |  23%
+  |                                                                       
+  |=================                                                |  26%
+  |                                                                       
+  |==================                                               |  27%
+  |                                                                       
+  |===================                                              |  30%
+  |                                                                       
+  |=====================                                            |  32%
+  |                                                                       
+  |=======================                                          |  35%
+  |                                                                       
+  |========================                                         |  37%
+  |                                                                       
+  |==========================                                       |  40%
+  |                                                                       
+  |============================                                     |  42%
+  |                                                                       
+  |=============================                                    |  45%
+  |                                                                       
+  |===============================                                  |  48%
+  |                                                                       
+  |=================================                                |  50%
+  |                                                                       
+  |==================================                               |  53%
+  |                                                                       
+  |====================================                             |  55%
+  |                                                                       
+  |======================================                           |  58%
+  |                                                                       
+  |=======================================                          |  60%
+  |                                                                       
+  |========================================                         |  62%
+  |                                                                       
+  |=========================================                        |  64%
+  |                                                                       
+  |===========================================                      |  66%
+  |                                                                       
+  |============================================                     |  68%
+  |                                                                       
+  |==============================================                   |  71%
+  |                                                                       
+  |================================================                 |  73%
+  |                                                                       
+  |=================================================                |  76%
+  |                                                                       
+  |===================================================              |  79%
+  |                                                                       
+  |=====================================================            |  81%
+  |                                                                       
+  |=======================================================          |  84%
+  |                                                                       
+  |========================================================         |  87%
+  |                                                                       
+  |==========================================================       |  89%
+  |                                                                       
+  |============================================================     |  92%
+  |                                                                       
+  |=============================================================    |  94%
+  |                                                                       
+  |===============================================================  |  97%
+  |                                                                       
+  |=================================================================| 100%</code></pre>
+<pre class="r"><code>md_rf</code></pre>
+<pre><code>## Model Details:
+## ==============
+## 
+## H2OBinomialModel: drf
+## Model ID:  DRF_model_R_1485965587274_362 
+## Model Summary: 
+##   number_of_trees number_of_internal_trees model_size_in_bytes min_depth
+## 1            1000                     1000             5708844        15
+##   max_depth mean_depth min_leaves max_leaves mean_leaves
+## 1        15   15.00000        207        700   448.12500
+## 
+## 
+## H2OBinomialMetrics: drf
+## ** Reported on training data. **
+## ** Metrics reported on Out-Of-Bag training samples **
+## 
+## MSE:  0.06431841
+## RMSE:  0.2536107
+## LogLoss:  0.2347904
+## Mean Per-Class Error:  0.2496323
+## AUC:  0.8437672
+## Gini:  0.6875343
+## 
+## Confusion Matrix for F1-optimal threshold:
+##           0   1    Error        Rate
+## 0      9164 125 0.013457   =125/9289
+## 1       445 471 0.485808    =445/916
+## Totals 9609 596 0.055855  =570/10205
+## 
+## Maximum Metrics: Maximum metrics at their respective thresholds
+##                         metric threshold    value idx
+## 1                       max f1  0.179473 0.623016 148
+## 2                       max f2  0.140521 0.584182 184
+## 3                 max f0point5  0.207792 0.773026 128
+## 4                 max accuracy  0.207792 0.948555 128
+## 5                max precision  0.551802 1.000000   0
+## 6                   max recall  0.029999 1.000000 392
+## 7              max specificity  0.551802 1.000000   0
+## 8             max absolute_mcc  0.207792 0.634771 128
+## 9   max min_per_class_accuracy  0.096186 0.751092 251
+## 10 max mean_per_class_accuracy  0.119253 0.773837 211
+## 
+## Gains/Lift Table: Extract with `h2o.gainsLift(&lt;model&gt;, &lt;data&gt;)` or `h2o.gainsLift(&lt;model&gt;, valid=&lt;T/F&gt;, xval=&lt;T/F&gt;)`</code></pre>
+<pre class="r"><code>h2o.auc(md_rf)</code></pre>
+<pre><code>## [1] 0.8437672</code></pre>
+<pre class="r"><code>h2o.auc(h2o.performance(md_rf, dx_test))</code></pre>
+<pre><code>## [1] 0.8448101</code></pre>
+<p>We test our chosen model with the test set, leading to an AUROC of 0.84.</p>
+<p>In details from our confusion matrix, our model returned:</p>
+<ul>
+<li><p>9181 true positives for a dataset of 10205</p></li>
+<li><p>465 true negatives</p></li>
+<li><p>108 false positives and 451 false negatives</p></li>
+</ul>
+<p>We consider our chosen model a successful one predicting churn for our future data with 84% precision.</p>
+</div>
+</div>
+<div id="business-value" class="section level1">
+<h1>Business value</h1>
+<p>As stated earlier, tracking telecommunication companies customers’ churn rates is key to maintain and possibly grow revenues. Identifying churn intent and handling it before the event occurs increases chances to keep the customer.</p>
+<p>Our churn prediction model can identify those with 85% precision, and we can trigger several actions using the variables we already have on-hand:</p>
+<ul>
+<li><p>previously dividing customers into groups of lifetime value, then the model can trigger different level of retention actions (like offering added value services for free, adjusting the monthly billing)</p></li>
+<li><p>low lifetime value customers can even have customer care messages that don’t require additional cost but do prevent churn intent</p></li>
+</ul>
+<p>Also, the model can be used for non-action analysis spotting possible causes of churn intent like:</p>
+<ul>
+<li><p>is monthly billing inequality too high for loyal customers bacause we don’t offer enough assistance to spot which package to choose, causing possible churn (building an upsell or cross-sell program)</p></li>
+<li><p>is the service level right for specific customers, as several times upsell can be an effective method to prevent churn</p></li>
+<li><p>prediction of customers we have to loose anyhow, as they represent lower value and offering them churn prevention at a cost wouldn’t be beneficial</p></li>
+</ul>
+</div>
+<div id="further-possible-exploration" class="section level1">
+<h1>Further possible exploration</h1>
+<p>We can tweak our model further in the future by:</p>
+<ul>
+<li><p>tweaking hyperparameters further and/or adding new ones</p></li>
+<li><p>trying additional algorithms like neural network</p></li>
+<li><p>going back to the business stakeholders to collect additional predictors</p></li>
+<li><p>revisiting the model after collection of future data and building new training set</p></li>
+=======
 <p>Chosen model: random forest 3</p>
 <ul>
 <li><p>validation performance of 0.84</p></li>
 <li><p>ntrees = 1000</p></li>
 <li><p>max_depth = 15</p></li>
+>>>>>>> 10b402ebf1abd118e6bc0a945f564487fed9b845
 </ul>
 </div>
 <div id="random-forest-model-3-test" class="section level2">

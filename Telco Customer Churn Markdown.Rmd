@@ -580,6 +580,14 @@ During our data exploration, we could point out some correlations in the dataset
 
 We split our dataset into training, validation and test sets. We will keep our test set untouched until the selection of our final model.
 
+The split will be the following:
+
+- 50% for training
+
+- 25% for validation
+
+- 25% for testing
+
 ```{r split, message=FALSE, warning=FALSE}
 
 set.seed(123)
@@ -595,7 +603,25 @@ d_test  <- finaldataset[idx_test,]
 
 ## Modeling
 
+We took the following aspects into account when choosing our model:
+
+- business question that needs to be answered: we intend to build a classifier predicting whether a customer will churn or not
+
+- volume and structure of the data: we are going to work with more than 20k observations and 29 different variables (some of them will be transformed into boolean variables)
+
+- readiness of the modeler: our beginner level of modeling capability drives us towards algorithms which tend to perform well without too much tweaking
+
 ## Setup
+
+We will use H2O as our machine learning engine and will use 3 types of random forest and 3 types of gradient boosting methods. Random forests and GBMs are top choices when it comes to situations cited above. We will also be able to do a simple grid search with 3 different hyperparameters that we can more easily understand (number of trees, maximum depth and learning rate).
+
+# Random forest choices:
+
+- model 1: ntrees = 100, max_depth = 5,
+
+- model 2: ntrees = 200, max_depth = 10,
+
+- ntrees = 1000, max_depth = 15.
 
 We will use H2O as our machine learning engine and will use 3 types of random forest and 3 types of gradient boosting methods.
 
@@ -684,6 +710,14 @@ h2o.auc(md_rf)
 h2o.auc(h2o.performance(md_rf, dx_valid))
 
 ```
+
+# GBM choices:
+
+- model 1: ntrees = 100, max_depth = 5, learn_rate: 0.01,
+
+- model 2: ntrees = 200, max_depth = 10, learn_rate: 0.03,
+
+- ntrees = 1000, max_depth = 15, learn_rate: 0.1.
 
 ## GBM 1
 
@@ -774,6 +808,23 @@ GBM
 
 3: Training performance: 1, validation performance: 0.85
 
+## Analysis of the chosen model
+
+Our chosen model is random forest 3, performing better compared to others:
+
+- validation performance is the highest with 0.85
+
+- training and validation performances are very consistent, with 0.84 and 0.85 respectively
+
+- computing time is better than the comparable GBM 3 model
+
+- best working hyperparameters were 1000 trees with maximum depth of 15
+
+We suspect that a high precision algorithm performs best as only 12 of the predictors showed some kind of statistically significant correlation from the available 29 of the dataset. Tiny correlations among the factors can be picked up by algorithms, which are able to strengthen weak classifiers to a strong one.
+
+
+## Testing the chosen model
+
 Chosen model: random forest 3
 
 - validation performance of 0.84
@@ -816,8 +867,66 @@ In details from our confusion matrix, our model returned:
 - 465 true negatives
 
 - 108 false positives and 451 false negatives
+=======
+
+{
+  md_rf <- h2o.randomForest(x = c(2:83), 
+                            y = "churn", 
+                            training_frame = dx_train, 
+                            mtries = -1, 
+                            ntrees = 1000, 
+                            max_depth = 15, 
+                            nbins = 20)
+}
+
+md_rf
+
+h2o.auc(md_rf)
+
+h2o.auc(h2o.performance(md_rf, dx_test))
 
 We consider our chosen model a successful one predicting churn for our future data with 84% precision.
 
+# Business value
+
+As stated earlier, tracking telecommunication companies customers’ churn rates is key to maintain and possibly grow revenues. Identifying churn intent and handling it before the event occurs increases chances to keep the customer.
+
+Our churn prediction model can identify those with 85% precision, and we can trigger several actions using the variables we already have on-hand:
+
+- previously dividing customers into groups of lifetime value, then the model can trigger different level of retention actions (like offering added value services for free, adjusting the monthly billing)
+
+- low lifetime value customers can even have customer care messages that don't require additional cost but do prevent churn intent
+
+Also, the model can be used for non-action analysis spotting possible causes of churn intent like:
+
+- is monthly billing inequality too high for loyal customers bacause we don't offer enough assistance to spot which package to choose, causing possible churn (building an upsell or cross-sell program)
+
+- is the service level right for specific customers, as several times upsell can be an effective method to prevent churn
+
+- prediction of customers we have to loose anyhow, as they represent lower value and offering them churn prevention at a cost wouldn't be beneficial
+
+# Further possible exploration
+
+We can tweak our model further in the future by:
+
+- tweaking hyperparameters further and/or adding new ones
+
+- trying additional algorithms like neural network
+
+- going back to the business stakeholders to collect additional predictors
+
+We test our chosen model with the test set, leading to an AUROC of 0.84. 
+
+In details from our confusion matrix, our model returned:
+
+- 9181 true positives for a dataset of 10205
+
+- 465 true negatives
+
+- 108 false positives and 451 false negatives
+
+We consider our chosen model a successful one predicting churn for our future data with 84% precision.
+
+- revisiting the model after collection of future data and building new training set
 
 # Halt and catch fire
