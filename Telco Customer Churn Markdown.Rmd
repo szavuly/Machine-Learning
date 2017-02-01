@@ -372,7 +372,6 @@ ggplot(data = dataset, aes(x = churn, y = totalminsusedinlastmonth)) +
 
 Unpaid balances vary from 0 to 249 USD, but the amount of them doesn't account for churn intent in a statistically significant way.
 
-
 ```{r unpaidbalance, message=FALSE, warning=FALSE}
 
 summary(dataset$unpaidbalance)
@@ -615,14 +614,6 @@ We took the following aspects into account when choosing our model:
 
 We will use H2O as our machine learning engine and will use 3 types of random forest and 3 types of gradient boosting methods. Random forests and GBMs are top choices when it comes to situations cited above. We will also be able to do a simple grid search with 3 different hyperparameters that we can more easily understand (number of trees, maximum depth and learning rate).
 
-# Random forest choices:
-
-- model 1: ntrees = 100, max_depth = 5,
-
-- model 2: ntrees = 200, max_depth = 10,
-
-- ntrees = 1000, max_depth = 15.
-
 We will use H2O as our machine learning engine and will use 3 types of random forest and 3 types of gradient boosting methods.
 
 ```{r upload, message=FALSE, warning=FALSE}
@@ -638,6 +629,14 @@ dx_test <- as.h2o(d_test)
 dx_test$churn <- as.factor(dx_test$churn)
 
 ```
+
+# Random forest choices:
+
+- model 1: ntrees = 100, max_depth = 5,
+
+- model 2: ntrees = 200, max_depth = 10,
+
+- ntrees = 1000, max_depth = 15.
 
 ## Random forest 1
 
@@ -808,6 +807,7 @@ GBM
 
 3: Training performance: 1, validation performance: 0.85
 
+
 ## Analysis of the chosen model
 
 Our chosen model is random forest 3, performing better compared to others:
@@ -833,10 +833,7 @@ Chosen model: random forest 3
 
 - max_depth = 15
 
-
-## Random forest model 3 test
-
-We test our chosen random forest model 3 on our test set, which was unused so far.
+- we test our chosen random forest model 3 on our test set, which was unused so far
 
 ```{r randomforesttest, message=FALSE, warning=FALSE}
 
@@ -858,6 +855,8 @@ h2o.auc(h2o.performance(md_rf, dx_test))
 
 ```
 
+# End results
+
 We test our chosen model with the test set, leading to an AUROC of 0.84. 
 
 In details from our confusion matrix, our model returned:
@@ -867,23 +866,6 @@ In details from our confusion matrix, our model returned:
 - 465 true negatives
 
 - 108 false positives and 451 false negatives
-=======
-
-{
-  md_rf <- h2o.randomForest(x = c(2:83), 
-                            y = "churn", 
-                            training_frame = dx_train, 
-                            mtries = -1, 
-                            ntrees = 1000, 
-                            max_depth = 15, 
-                            nbins = 20)
-}
-
-md_rf
-
-h2o.auc(md_rf)
-
-h2o.auc(h2o.performance(md_rf, dx_test))
 
 We consider our chosen model a successful one predicting churn for our future data with 84% precision.
 
@@ -905,8 +887,6 @@ Also, the model can be used for non-action analysis spotting possible causes of 
 
 - prediction of customers we have to loose anyhow, as they represent lower value and offering them churn prevention at a cost wouldn't be beneficial
 
-# Further possible exploration
-
 We can tweak our model further in the future by:
 
 - tweaking hyperparameters further and/or adding new ones
@@ -914,18 +894,6 @@ We can tweak our model further in the future by:
 - trying additional algorithms like neural network
 
 - going back to the business stakeholders to collect additional predictors
-
-We test our chosen model with the test set, leading to an AUROC of 0.84. 
-
-In details from our confusion matrix, our model returned:
-
-- 9181 true positives for a dataset of 10205
-
-- 465 true negatives
-
-- 108 false positives and 451 false negatives
-
-We consider our chosen model a successful one predicting churn for our future data with 84% precision.
 
 - revisiting the model after collection of future data and building new training set
 
